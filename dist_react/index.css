@@ -1,0 +1,12 @@
+.calculator-button{
+    width: 30px;
+    height: 30px;
+    background-color: aqua;
+    cursor: pointer;
+}
+.calculadora{
+    background-color: rgb(32, 106, 170);
+    border: 2px solid black;
+    width: 40%;
+    height: fit-content;
+}

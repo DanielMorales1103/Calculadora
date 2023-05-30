@@ -16,6 +16,8 @@
         "bootstrap": "^5.2.3",
         "css-loader": "^6.7.3",
         "es2015": "^0.0.0",
+        "eslint": "^8.41.0",
+        "eslint-config-airbnb": "^19.0.4",
         "file-loader": "^6.2.0",
         "html-webpack-plugin": "^5.5.1",
         "image-webpack-loader": "^8.1.0",

@@ -1,6 +1,7 @@
-import React from "react"
-import ReactDOM  from "react-dom"
+import React from 'react'
+import ReactDOM from 'react-dom'
 
-import CreateApp from "./app";
+import CreateApp from './app'
 
-ReactDOM.render(<CreateApp></CreateApp>,document.getElementById("root"));
+// eslint-disable-next-line no-undef
+ReactDOM.render(<CreateApp />, document.getElementById('root'))

@@ -1,12 +1,37 @@
 .calculator-button{
-    width: 30px;
-    height: 30px;
-    background-color: aqua;
+    width: auto;
+    height: auto;
+    padding-top: 7%;
+    padding-bottom: 7%;
+    background-color: rgb(5, 207, 46);
     cursor: pointer;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 250%;
+}
+.calculator-button:hover{
+    background-color: rgb(3, 149, 149);
+}
+body{
+    background-color: rgb(107, 107, 107);
 }
 .calculadora{
+    margin-top: 5%;
+    margin-left: 5%;
     background-color: rgb(32, 106, 170);
     border: 2px solid black;
-    width: 40%;
+    width: 35%;
     height: fit-content;
+}
+.calculator-display{
+    background-color: rgb(122, 121, 121);
+    text-align: right;
+    padding-right: 3%;
+    font-size: 300%;
+}
+.column{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(25%, 1fr));
 }

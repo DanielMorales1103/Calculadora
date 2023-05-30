@@ -4,89 +4,99 @@ import './app.css'
 
 
 export default function CreateApp(){
-    const [displayValue, setDisplayValue] = useState("0");
-    const [operation, setOperation] = useState("");
+
+    const [displayValue, setDisplayValue] = useState('0');
     const [firstNum, setFirstNum] = useState(null);
-    const [secondNum, setSecondNum] = useState(null);
-    const [result, setResult] = useState(0);
-
+    const [operation, setOperation] = useState(null);
+    const [shouldClearDisplay, setShouldClearDisplay] = useState(false);
+  
     const handleButtonClick = (value) => {
-        if (displayValue.length < 9) {
-            if (displayValue === "0") {
-                setDisplayValue(value);
-            } else {
-                setDisplayValue(displayValue + value);
-            }
+        if (value === "." && displayValue.includes(".")) {
+            // Si el valor es un punto y el display ya contiene un punto, no hacemos nada
+            return;
         }
-    };
-
-    const handleClearClick = () => {
-        setDisplayValue("0");
-        setFirstNum(null);
-        setSecondNum(null);
-        setOperation("");
-        setResult(0);
-    };
-
-    const handleEqualClick = () => {
-        if (firstNum == null) {
-            setFirstNum(displayValue);
-            setOperation(op);
-            setDisplayValue("0");
-          } else {
-            setSecondNum(displayValue);
-          }
-    }
-
-    const ChangeValue = () =>{
-        setResult(result*(-1))
-    }
-
-    const handleOperation = (op) => { 
-        if (firstNum == null) {
-          setFirstNum(displayValue);   
-          setOperation(op);
-            setDisplayValue("0");       
+        if(displayValue === "0" && value ==="."){
+             setDisplayValue("0.");
+             setShouldClearDisplay(false);
+        }else if (displayValue === "0" || shouldClearDisplay) {
+        setDisplayValue(value);
+        setShouldClearDisplay(false);
         } else {
-            setSecondNum(displayValue);
+        setDisplayValue(displayValue + value.substring(0, 9 - displayValue.length));
         }
-      }
-
-    useEffect(() => {
-        console.log(firstNum)
-        console.log(operation)
-        console.log(secondNum)
-        let num1 = parseFloat(firstNum);
-        let num2 = parseFloat(secondNum)
-        if (operation === "+"){
-            setResult(num1 + num2)
-        }else if (operation === "-"){
-            setResult(num1 - num2)
-        } else if (operation === "*"){
-            setResult(num1 * num2)
-        }else if (operation === "/"){
-            setResult(num1 / num2)
-        }
-            
-    }, [secondNum]);
-
-    useEffect(() =>{
-        console.log(result) 
-        let resultado = String(result)
-        setDisplayValue(resultado)
-        setFirstNum(result)
-        setOperation("")
-    }, [result])
    
-    
+    };
+  
+    const handleClearClick = () => {
+      setDisplayValue('0');
+      setFirstNum(null);
+      setOperation(null);
+    };
+  
+    const handleEqualClick = () => {
+      if (firstNum && operation) {
+        const num1 = parseFloat(firstNum);
+        const num2 = parseFloat(displayValue);
+        let result;
+  
+        switch (operation) {
+          case '+':
+            result = num1 + num2;
+            break;
+          case '-':
+            result = num1 - num2;
+            break;
+          case '*':
+            result = num1 * num2;
+            break;
+          case '/':
+            if(num2==0){
+                result = 'ERROR'   
+            }else{
+                result = num1 / num2;
+            }            
+            break;
+          case '%':
+            result = num1 % num2;
+            break;
+          default:
+            return;
+        }
+        
+        if(result > 999999999){
+            result = 'ERROR'
+        }
+        setDisplayValue(result.toString().substring(0,9));
+        setFirstNum(result.toString());
+        setShouldClearDisplay(true);
+        setOperation(null)
+      }
+    };
+  
+    const handleOperation = (op) => {
+        if (firstNum && operation) {
+            handleEqualClick(); // Calcular el resultado antes de cambiar la operación
+          } else {
+            setFirstNum(displayValue);
+            setShouldClearDisplay(true);
+          }
+        
+          setOperation(op);
+    };
 
+     const ChangeValue = () =>{
+        let result = parseFloat(displayValue); 
+        setDisplayValue(String(result*(-1)).substring(0,9))
+     }
+    
     return(
         <div className='calculadora'>
            <div className="calculator-display">{displayValue}</div>
             <div className="calculator-buttons">
                 <div className='column'>
                     <CalculatorButton label="C" onClick={handleClearClick} />
-                    <CalculatorButton label="/" onClick={() => handleOperation("/")} />
+                    <CalculatorButton label="%" onClick={() => handleOperation("%")}/>
+                    <CalculatorButton label="/" onClick={() => handleOperation("/")}/>
                 </div>
                 <div className='column'>
                     <CalculatorButton label="7" onClick={() => handleButtonClick("7")} />
@@ -108,6 +118,7 @@ export default function CreateApp(){
                 </div>
                 <div className='column'>
                     <CalculatorButton label="0" onClick={() => handleButtonClick("0")} />
+                    <CalculatorButton label="." onClick={() => handleButtonClick(".")} />
                     <CalculatorButton label="=" onClick={handleEqualClick} />
                     <CalculatorButton label="+/-" onClick={ChangeValue} />
                 </div>         
